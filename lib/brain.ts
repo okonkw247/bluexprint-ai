@@ -95,7 +95,7 @@ function getModel(config: AIConfig) {
   }
 }
 
-async function callAI(
+export async function callAI(
   config: AIConfig,
   system: string,
   prompt: string,

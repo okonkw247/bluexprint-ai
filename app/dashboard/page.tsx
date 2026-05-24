@@ -35,7 +35,7 @@ export default function Dashboard() {
       setShowSettings(true);
       return;
     }
-    sessionStorage.setItem("bluex_config", JSON.stringify({ provider, model, apiKey }));
+    localStorage.setItem("bluex_config", JSON.stringify({ provider, model, apiKey }));
     sessionStorage.setItem("bluex_topic", topic);
     setShowModal(false);
     router.push("/build");

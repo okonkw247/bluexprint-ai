@@ -33,7 +33,7 @@ export default function BuildPage() {
   const [activeTab, setActiveTab] = useState<"product" | "charter" | "calendar" | "doc">("product");
 
   useEffect(() => {
-    const savedConfig = sessionStorage.getItem("bluex_config");
+    const savedConfig = localStorage.getItem("bluex_config");
     const savedTopic = sessionStorage.getItem("bluex_topic");
     if (savedConfig) setConfig(JSON.parse(savedConfig));
     if (savedTopic) setTopic(savedTopic);
@@ -148,6 +148,10 @@ export default function BuildPage() {
       const brandData = await brandRes.json();
       console.log("Brand data:", JSON.stringify(brandData).slice(0, 200));
       setBrand(brandData.brand);
+      sessionStorage.setItem("bluex_brand", JSON.stringify(brandData.brand));
+      sessionStorage.setItem("bluex_niche", JSON.stringify(selectedNiche));
+      sessionStorage.setItem("bluex_sections", JSON.stringify(scriptSections));
+      if (selectedPackaging) sessionStorage.setItem("bluex_packaging", JSON.stringify(selectedPackaging));
 
       const calRes = await fetch("/api/brain", {
         method: "POST",
@@ -385,7 +389,7 @@ export default function BuildPage() {
           {scriptSections.length === 5 && (
             <button
               onClick={handleGenerateBrand}
-              className="w-full py-4 bg-gradient-to-r from-[#6C63FF] to-[#A78BFF] rounded-2xl font-bold text-white flex items-center justify-center gap-2 mb-8"
+              className="w-full py-4 bg-gradient-to-r from-[#6C63FF] to-[#A78BFF] rounded-2xl font-bold text-white flex items-center justify-center gap-2 mb-3"
             >
               Define the Brand <ChevronRight size={16} />
             </button>
@@ -492,6 +496,19 @@ export default function BuildPage() {
               {activeTab === "doc" && (
                 <ProductDoc brand={brand} sections={scriptSections} />
               )}
+
+              {/* Create eBook CTA */}
+              <div className="mt-4 mb-8 bg-gradient-to-r from-[#0D1A2A] to-[#13152A] border border-[#1E2130] rounded-2xl p-5">
+                <p className="text-xs font-mono text-[#4A4D6A] uppercase mb-1">Next Step</p>
+                <h3 className="font-bold text-[#E8E6FF] mb-1">Build Your Complete eBook</h3>
+                <p className="text-xs text-[#4A4D6A] mb-4">Generate a full Google Doc-style eBook with chapters, action items, reference library and download to PDF.</p>
+                <button
+                  onClick={() => router.push("/ebook")}
+                  className="w-full py-3 bg-gradient-to-r from-[#6C63FF] to-[#A78BFF] rounded-xl font-bold text-white text-sm"
+                >
+                  Create eBook →
+                </button>
+              </div>
             </>
           )}
         </div>
